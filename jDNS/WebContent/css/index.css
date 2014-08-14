@@ -1,0 +1,39 @@
+#header{
+	background-color:#1E90FF;
+	font-color:white;
+	margin-bottom:2mm;
+	width:auto;
+}
+#menu {
+	background-color:#FFFFFF;
+	height:500px;
+	width:200px;
+	float:left;
+}
+#content{
+	background-color:#FFFFFF;
+	height:200px;
+	width:400px;
+	float:left;
+	font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+}
+
+#content td, #content th {
+    font-size: 1em;
+    border: 1px solid #1E90FF;
+    padding: 3px 7px 2px 7px;
+}
+
+#content th {
+    font-size: 1.1em;
+    text-align: left;
+    padding-top: 5px;
+    padding-bottom: 4px;
+    background-color: #1E90FF;
+    color: #ffffff;
+}
+#content tr.alt td {
+    color: #000000;
+    background-color: #1E90FF;
+}
