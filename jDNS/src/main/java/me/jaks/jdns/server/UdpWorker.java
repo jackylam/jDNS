@@ -81,6 +81,7 @@ public class UdpWorker implements Runnable{
 						ByteArrayOutputStream rbufStream = new ByteArrayOutputStream();
 						header.setQr((byte) 1);
 						header.setRcode((byte) 3);
+						header.setArcount(0);
 						try {
 							rbufStream.write(header.serialize());
 						} catch (IOException e1) {
@@ -115,6 +116,7 @@ public class UdpWorker implements Runnable{
 						header.setRcode((byte) 0);
 						header.setAncount(resRecords);
 						header.setNscount(1);
+						header.setArcount(0);
 						byte[] offset = {(byte)0xC0, (byte)0x0C};
 						
 						ByteArrayOutputStream rbufStream = new ByteArrayOutputStream();
@@ -164,6 +166,7 @@ public class UdpWorker implements Runnable{
 						ByteArrayOutputStream rbufStream = new ByteArrayOutputStream();
 						header.setQr((byte) 1);
 						header.setRcode((byte) 3);
+						header.setArcount(0);
 						try {
 							rbufStream.write(header.serialize());
 						} catch (IOException e1) {
@@ -206,6 +209,7 @@ public class UdpWorker implements Runnable{
 						header.setRcode((byte) 0);
 						header.setAncount(resRecords);
 						header.setNscount(1);
+						header.setArcount(0);
 						byte[] offset = {(byte)0xC0, (byte)0x0C};
 						
 						ByteArrayOutputStream rbufStream = new ByteArrayOutputStream();
@@ -256,6 +260,7 @@ public class UdpWorker implements Runnable{
 						ByteArrayOutputStream rbufStream = new ByteArrayOutputStream();
 						header.setQr((byte) 1);
 						header.setRcode((byte) 3);
+						header.setArcount(0);
 						try {
 							rbufStream.write(header.serialize());
 						} catch (IOException e1) {
@@ -291,6 +296,7 @@ public class UdpWorker implements Runnable{
 						header.setRcode((byte) 0);
 						header.setAncount(resRecords);
 						header.setNscount(1);
+						header.setArcount(0);
 						byte[] offset = {(byte)0xC0, (byte)0x0C};
 						
 						try {
@@ -337,6 +343,7 @@ public class UdpWorker implements Runnable{
 					ByteArrayOutputStream rbufStream = new ByteArrayOutputStream();
 					header.setQr((byte) 1);
 					header.setRcode((byte) 4);
+					header.setArcount(0);
 					try {
 						rbufStream.write(header.serialize());
 					} catch (IOException e1) {
