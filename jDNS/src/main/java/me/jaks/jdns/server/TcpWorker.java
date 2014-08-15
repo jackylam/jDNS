@@ -84,6 +84,9 @@ public class TcpWorker implements Runnable{
 						header.setArcount(0);
 						try {
 							rbufStream.write(header.serialize());
+							rbufStream.write(qName);
+							rbufStream.write(qtype);
+							rbufStream.write(qclass);
 							byte[] rbuf = rbufStream.toByteArray();
 							byte[] rbuf2 = new byte[rbuf.length + 2];
 							rbuf2[0] = (byte)(rbuf.length << 8 & 0xff00);
@@ -167,6 +170,10 @@ public class TcpWorker implements Runnable{
 						header.setArcount(0);
 						try {
 							rbufStream.write(header.serialize());
+							rbufStream.write(qName);
+							rbufStream.write(qtype);
+							rbufStream.write(qclass);
+							
 							byte[] rbuf = rbufStream.toByteArray();
 							byte[] rbuf2 = new byte[rbuf.length + 2];
 							rbuf2[0] = (byte)(rbuf.length << 8 & 0xff00);
@@ -249,6 +256,9 @@ public class TcpWorker implements Runnable{
 						header.setArcount(0);
 						try {
 							rbufStream.write(header.serialize());
+							rbufStream.write(qName);
+							rbufStream.write(qtype);
+							rbufStream.write(qclass);
 				
 							byte[] rbuf = rbufStream.toByteArray();
 							byte[] rbuf2 = new byte[rbuf.length + 2];
@@ -326,7 +336,10 @@ public class TcpWorker implements Runnable{
 					header.setArcount(0);
 					try {
 						rbufStream.write(header.serialize());
-					
+						rbufStream.write(qName);
+						rbufStream.write(qtype);
+						rbufStream.write(qclass);
+						
 						byte[] rbuf = rbufStream.toByteArray();
 						byte[] rbuf2 = new byte[rbuf.length + 2];
 						rbuf2[0] = (byte)(rbuf.length << 8 & 0xff00);

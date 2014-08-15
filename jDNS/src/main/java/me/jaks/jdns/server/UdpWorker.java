@@ -84,6 +84,9 @@ public class UdpWorker implements Runnable{
 						header.setArcount(0);
 						try {
 							rbufStream.write(header.serialize());
+							rbufStream.write(qName);
+							rbufStream.write(qtype);
+							rbufStream.write(qclass);
 						} catch (IOException e1) {
 							// TODO Auto-generated catch block
 							e1.printStackTrace();
@@ -169,6 +172,9 @@ public class UdpWorker implements Runnable{
 						header.setArcount(0);
 						try {
 							rbufStream.write(header.serialize());
+							rbufStream.write(qName);
+							rbufStream.write(qtype);
+							rbufStream.write(qclass);
 						} catch (IOException e1) {
 							// TODO Auto-generated catch block
 							e1.printStackTrace();
@@ -263,6 +269,9 @@ public class UdpWorker implements Runnable{
 						header.setArcount(0);
 						try {
 							rbufStream.write(header.serialize());
+							rbufStream.write(qName);
+							rbufStream.write(qtype);
+							rbufStream.write(qclass);
 						} catch (IOException e1) {
 							// TODO Auto-generated catch block
 							e1.printStackTrace();
@@ -346,6 +355,9 @@ public class UdpWorker implements Runnable{
 					header.setArcount(0);
 					try {
 						rbufStream.write(header.serialize());
+						rbufStream.write(qName);
+						rbufStream.write(qtype);
+						rbufStream.write(qclass);
 					} catch (IOException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
