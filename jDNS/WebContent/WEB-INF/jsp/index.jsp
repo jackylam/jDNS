@@ -24,7 +24,7 @@
 <form action="/jdns/login" method="POST">
    Email:<input type="text" name="email" style="margin:25px">
 <br/>
-Password:<input type="text" name="password" />
+Password:<input type="password" name="password" />
 <br/>
 <br/>
 <input type="submit" value="Submit" />

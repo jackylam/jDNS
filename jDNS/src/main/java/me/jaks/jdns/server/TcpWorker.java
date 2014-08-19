@@ -6,12 +6,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-
 import me.jaks.jdns.records.ARecord;
 import me.jaks.jdns.records.NAPTRRecord;
 import me.jaks.jdns.records.NSRecord;

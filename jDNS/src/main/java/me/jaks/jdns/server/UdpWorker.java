@@ -5,12 +5,6 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-
 import me.jaks.jdns.records.ARecord;
 import me.jaks.jdns.records.NAPTRRecord;
 import me.jaks.jdns.records.NSRecord;

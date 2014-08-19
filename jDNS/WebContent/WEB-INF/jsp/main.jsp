@@ -39,7 +39,7 @@ String user = null;
 	</tr>
 	<c:forEach var="entry" items="${requestScope.domainMap}">
   	<tr>
-  		<td><a href="/jdns/zonedetail?zone=<c:out value="${entry.key}"/>"><c:out value="${entry.key}"/></a></td>
+  		<td><a href="/jdns/ZoneDetailAction?zone=<c:out value="${entry.key}"/>"><c:out value="${entry.key}"/></a></td>
   		<td><c:out value="${entry.value}"/></td>
   	</tr>
 </c:forEach>
