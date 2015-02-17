@@ -5,7 +5,9 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+
 import me.jaks.jdns.records.ARecord;
+import me.jaks.jdns.records.CNAMERecord;
 import me.jaks.jdns.records.NAPTRRecord;
 import me.jaks.jdns.records.NSRecord;
 import me.jaks.jdns.records.SRVRecord;
@@ -71,6 +73,7 @@ public class UdpWorker implements Runnable{
 				case 1: // A Record
 					ARecord[] result = RecordRepo.getARecord(domain,ds);
 					if(result == null) {
+						logger.debug("query result is null");
 						counter.setNxdomain();
 						ByteArrayOutputStream rbufStream = new ByteArrayOutputStream();
 						header.setQr((byte) 1);
@@ -156,6 +159,94 @@ public class UdpWorker implements Runnable{
 					}
 					break;
 						
+				case 5: // CNAME Record
+					CNAMERecord[] cnameResult = RecordRepo.getCNAMERecord(domain,ds);
+					if(cnameResult == null) {
+						logger.debug("query result is null");
+						counter.setNxdomain();
+						ByteArrayOutputStream rbufStream = new ByteArrayOutputStream();
+						header.setQr((byte) 1);
+						header.setRcode((byte) 3);
+						header.setArcount(0);
+						try {
+							rbufStream.write(header.serialize());
+							rbufStream.write(qName);
+							rbufStream.write(qtype);
+							rbufStream.write(qclass);
+						} catch (IOException e1) {
+							e1.printStackTrace();
+						}
+						byte[] rbuf = rbufStream.toByteArray();
+						if(logger.isDebugEnabled()) {
+							logger.debug("Deocding response...");
+							printTrace(rbuf);
+						}
+						
+						InetAddress address = packet.getAddress();
+						int port = packet.getPort();
+						packet = new DatagramPacket(rbuf, rbuf.length, address, port);
+						try {
+							socket.send(packet);
+							counter.setResponse();
+						} catch (IOException e) {
+							logger.error("",e);
+						}  
+					}
+					else {
+						// found CNAME record
+						counter.setNoError();
+						int resRecords = 0;
+						for(CNAMERecord record: cnameResult) {
+							if (record.getDisabled() != true)
+								resRecords++;
+						}
+						header.setQr((byte)1);
+						header.setRcode((byte) 0);
+						header.setAncount(resRecords);
+						header.setNscount(1);
+						header.setArcount(0);
+						byte[] offset = {(byte)0xC0, (byte)0x0C};
+						
+						ByteArrayOutputStream rbufStream = new ByteArrayOutputStream();
+						
+						try {
+							rbufStream.write(header.serialize());
+							rbufStream.write(qName);
+							rbufStream.write(qtype);
+							rbufStream.write(qclass);
+					
+							for(CNAMERecord record: cnameResult) {
+								if(record.getDisabled() == true)
+									continue;
+								rbufStream.write(offset);
+								rbufStream.write(record.serialize());
+							}
+							NSRecord nsRecord = new NSRecord(domain,nameserver);
+							rbufStream.write(offset);
+							rbufStream.write(nsRecord.serialize());
+							byte[] rbuf = rbufStream.toByteArray();
+							if(rbuf.length > 512) {
+								byte[] temp = new byte[512];
+								System.arraycopy(rbuf, 0, temp, 0, 512);
+								rbuf = temp;
+								rbuf[2] |= 1 << 1;  
+								
+							}
+							if(logger.isDebugEnabled()) {
+								logger.debug("Deocding response...");
+								printTrace(rbuf);
+							}
+							InetAddress address = packet.getAddress();
+							int port = packet.getPort();
+							packet = new DatagramPacket(rbuf, rbuf.length, address, port);		
+							socket.send(packet);
+							counter.setResponse();
+						} catch (IOException e) {
+							logger.error("",e);
+						}
+					}
+					break;
+					
 				case 33:
 					SRVRecord[] srvResult = RecordRepo.getSRVRecord(domain,ds);
 					if(srvResult == null) {

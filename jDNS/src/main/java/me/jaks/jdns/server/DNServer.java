@@ -43,6 +43,7 @@ public class DNServer {
 				ds.setAcquireIncrement(5);
 				ds.setMaxPoolSize(200);
 				
+			
 				Counter counter = new Counter();
 	            
 				//start connectors

@@ -6,7 +6,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
+
 import me.jaks.jdns.records.ARecord;
+import me.jaks.jdns.records.CNAMERecord;
 import me.jaks.jdns.records.NAPTRRecord;
 import me.jaks.jdns.records.NSRecord;
 import me.jaks.jdns.records.SRVRecord;
@@ -153,7 +155,94 @@ public class TcpWorker implements Runnable{
 							
 					}
 					break;
+				
+				case 5:
+					CNAMERecord[] cnameResult = RecordRepo.getCNAMERecord(domain,ds);
+					if(cnameResult == null) {
+						counter.setNxdomain();
+						ByteArrayOutputStream rbufStream = new ByteArrayOutputStream();
+						header.setQr((byte) 1);
+						header.setRcode((byte) 3);
+						header.setArcount(0);
+						try {
+							rbufStream.write(header.serialize());
+							rbufStream.write(qName);
+							rbufStream.write(qtype);
+							rbufStream.write(qclass);
+							
+							byte[] rbuf = rbufStream.toByteArray();
+							byte[] rbuf2 = new byte[rbuf.length + 2];
+							rbuf2[0] = (byte)(rbuf.length << 8 & 0xff00);
+							rbuf2[1] = (byte)(rbuf.length & 0x00ff);
+							System.arraycopy(rbuf, 0, rbuf2, 2, rbuf.length);
+							if(logger.isDebugEnabled()) {
+								logger.debug("Deocding response...");
+								printTrace(rbuf2);
+							}
+							OutputStream os = socket.getOutputStream();
+							os.write(rbuf2);
+							os.flush();
+							os.close();
+							counter.setRespTCP();
+						} catch (IOException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}		
+					}
+					else {
+						// found record
+						counter.setNoError();
 						
+						int resRecords = 0;
+						for(CNAMERecord record: cnameResult) {
+							if(record.getDisabled() != true)
+								resRecords++;
+						}
+						header.setQr((byte)1);
+						header.setRcode((byte) 0);
+						header.setAncount(resRecords);
+						header.setNscount(1);
+						header.setArcount(0);
+						byte[] offset = {(byte)0xC0, (byte)0x0C};
+						
+						ByteArrayOutputStream rbufStream = new ByteArrayOutputStream();
+						
+						try {
+							rbufStream.write(header.serialize());
+							rbufStream.write(qName);
+							rbufStream.write(qtype);
+							rbufStream.write(qclass);
+					
+							for(CNAMERecord record: cnameResult) {
+								if(record.getDisabled() == true)
+									continue;
+								rbufStream.write(offset);
+								rbufStream.write(record.serialize());
+							}
+							NSRecord nsRecord = new NSRecord(domain,nameserver);
+							rbufStream.write(offset);
+							rbufStream.write(nsRecord.serialize());
+							byte[] rbuf = rbufStream.toByteArray();
+							byte[] rbuf2 = new byte[rbuf.length + 2];
+							rbuf2[0] = (byte)(rbuf.length << 8 & 0xff00);
+							rbuf2[1] = (byte)(rbuf.length & 0x00ff);
+							System.arraycopy(rbuf, 0, rbuf2, 2, rbuf.length);
+							if(logger.isDebugEnabled()) {
+								logger.debug("Deocding response...");
+								printTrace(rbuf2);
+							}
+							OutputStream os = socket.getOutputStream();
+							os.write(rbuf2);
+							os.flush();
+							os.close();
+							counter.setRespTCP();
+						}catch(IOException e) {
+							logger.error("",e);
+						}
+							
+					}
+					break;
+					
 				case 33:
 					SRVRecord[] srvResult = RecordRepo.getSRVRecord(domain,ds);
 					if(srvResult == null) {
