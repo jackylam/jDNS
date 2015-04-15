@@ -10,6 +10,9 @@ import java.sql.Statement;
 import javax.annotation.Resource;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.ServletSecurity.*;
+import javax.servlet.annotation.HttpConstraint;
+import javax.servlet.annotation.ServletSecurity;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
@@ -25,6 +28,7 @@ import org.apache.log4j.Logger;
  */
 
 @WebServlet(name="LoginAction",urlPatterns={"/index.jsp","/login"},loadOnStartup=1)
+@ServletSecurity(value = @HttpConstraint(transportGuarantee = TransportGuarantee.CONFIDENTIAL))
 public class LoginAction extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private static Logger logger = Logger.getLogger("jdnsconsole");
