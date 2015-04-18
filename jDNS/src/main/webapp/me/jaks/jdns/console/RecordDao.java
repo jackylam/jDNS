@@ -25,7 +25,7 @@ public class RecordDao implements RecordDaoInt {
 	}
 
 	@Override
-	public Record getRecord(int id) {
+	public Record getRecord(String name) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -88,7 +88,7 @@ public class RecordDao implements RecordDaoInt {
 	}
 
 	@Override
-	public void deleteRecord(int id) {
+	public void deleteRecord(String name) {
 		// TODO Auto-generated method stub
 
 	}
