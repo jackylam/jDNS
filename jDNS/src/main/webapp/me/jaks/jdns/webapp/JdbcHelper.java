@@ -1,4 +1,4 @@
-package me.jaks.jdns.console;
+package me.jaks.jdns.webapp;
 
 import java.sql.Connection;
 import java.sql.ResultSet;

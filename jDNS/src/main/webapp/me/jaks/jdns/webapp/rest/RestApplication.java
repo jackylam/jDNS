@@ -1,6 +1,4 @@
-package me.jaks.jdns.rest;
-
-import javax.ws.rs.ApplicationPath;
+package me.jaks.jdns.webapp.rest;
 
 import org.glassfish.jersey.server.ResourceConfig;
 

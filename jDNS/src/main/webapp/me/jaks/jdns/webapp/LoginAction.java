@@ -1,4 +1,4 @@
-package me.jaks.jdns.console;
+package me.jaks.jdns.webapp;
 
 import java.io.IOException;
 import java.sql.Connection;

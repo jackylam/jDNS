@@ -1,4 +1,4 @@
-package me.jaks.jdns.console;
+package me.jaks.jdns.webapp;
 
 public class Record {
 	private int id;

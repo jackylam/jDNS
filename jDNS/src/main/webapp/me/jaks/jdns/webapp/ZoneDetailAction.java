@@ -1,7 +1,6 @@
-package me.jaks.jdns.console;
+package me.jaks.jdns.webapp;
 
 import java.io.IOException;
-import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.ServletException;
@@ -12,30 +11,32 @@ import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 
 /**
- * Servlet implementation class MainAction
+ * Servlet implementation class ZoneDetailAction
  */
-@WebServlet("/main.jsp")
-public class MainAction extends HttpServlet {
+@WebServlet("/ZoneDetailAction")
+public class ZoneDetailAction extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	
+    
 	@Resource(name="jdbc/mysql")
 	private DataSource ds;
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public MainAction() {
+    public ZoneDetailAction() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		DomainSummarizer domains = new DomainSummarizer(ds);
-		Map<String,String> domainMap = domains.getSummary();
-		request.setAttribute("domainMap", domainMap);
-		request.getRequestDispatcher("/WEB-INF/jsp/main.jsp").forward(request, response);
+		String zone = request.getParameter("zone");
+		
+		RecordDaoInt recordDao = new RecordDao(ds);
+		Record[] records = recordDao.getRecords(zone);
+		request.setAttribute("records", records);
+		request.getRequestDispatcher("/WEB-INF/jsp/zone.jsp").forward(request, response);
+		
 	}
 
 	/**
