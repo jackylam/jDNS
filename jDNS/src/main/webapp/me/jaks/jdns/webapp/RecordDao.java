@@ -6,6 +6,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import javax.sql.DataSource;
 
 import org.apache.log4j.Logger;
@@ -13,10 +15,19 @@ import org.apache.log4j.Logger;
 public class RecordDao implements RecordDaoInt {
 
 	private static Logger logger = Logger.getLogger("jdnsconsole");
-	DataSource ds;
+	private DataSource ds;
 	
-	public RecordDao(DataSource ds) {
-		this.ds = ds;
+	public RecordDao() {
+		InitialContext ctx;
+		try {
+			ctx = new InitialContext();
+			this.ds = (DataSource) ctx.lookup("jdbc/mysql");
+		} catch (NamingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
 	}
 	@Override
 	public void createRecord(Record record) {

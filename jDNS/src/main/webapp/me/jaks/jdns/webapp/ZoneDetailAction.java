@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 
+import com.google.inject.Inject;
+
 /**
  * Servlet implementation class ZoneDetailAction
  */
@@ -17,8 +19,8 @@ import javax.sql.DataSource;
 public class ZoneDetailAction extends HttpServlet {
 	private static final long serialVersionUID = 1L;
     
-	@Resource(name="jdbc/mysql")
-	private DataSource ds;
+	@Inject
+	private RecordDao recordDao;
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -32,7 +34,6 @@ public class ZoneDetailAction extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String zone = request.getParameter("zone");
 		
-		RecordDaoInt recordDao = new RecordDao(ds);
 		Record[] records = recordDao.getRecords(zone);
 		request.setAttribute("records", records);
 		request.getRequestDispatcher("/WEB-INF/jsp/zone.jsp").forward(request, response);

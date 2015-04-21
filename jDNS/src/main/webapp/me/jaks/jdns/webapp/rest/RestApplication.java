@@ -12,16 +12,6 @@ import com.sun.jersey.api.core.ResourceConfig;
 import com.sun.jersey.guice.spi.container.servlet.GuiceContainer;
 
 
-/*
-//@ApplicationPath("rest")
-public class RestApplication extends ResourceConfig {
-    public RestApplication() {
-        packages("me.jaks.jdns.rest");
-    }
-}
-*/
-//(1) Extend GuiceServletContextListener
-
 public class RestApplication extends GuiceServletContextListener {
 
 	 @Override
