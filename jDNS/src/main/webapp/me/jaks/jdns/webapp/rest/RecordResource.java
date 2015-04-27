@@ -1,5 +1,6 @@
 package me.jaks.jdns.webapp.rest;
 
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -18,7 +19,7 @@ import com.google.inject.Inject;
 @Path("/record/{name}")
 public class RecordResource {
 
-	Logger logger = Logger.getLogger("jDNS");
+	Logger logger = Logger.getLogger(RecordResource.class);
 	
 	@Inject
 	private RecordDao recordDao;
@@ -32,5 +33,11 @@ public class RecordResource {
 		Gson gson = new Gson();
 		String json = gson.toJson(results);
 		return json;
+	}
+	
+	@DELETE
+	public void deleteRecord(@PathParam("name") String name) {
+		
+		recordDao.deleteRecord(name);
 	}
 }

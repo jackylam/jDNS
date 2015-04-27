@@ -4,5 +4,4 @@
 /WebContent/WEB-INF/.DS_Store
 /config.properties
 /dat/jetty-env.xml
-/build.xml
-/log4j.xml
+/deploy.xml

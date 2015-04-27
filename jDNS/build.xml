@@ -1,0 +1,112 @@
+<?xml version="1.0"?>
+<project name="jDNS" default="all" basedir=".">
+
+	<!-- compile the .java files -->
+		<target name="compile" description="compile source from src" depends="init">
+			<echo message="build = ${dir.build.classes}" />
+			<echo message="src = ${dir.src}" />
+			<echo message="compiling .java files...." />
+			<path id="master-classpath">
+				<fileset dir="${dir.lib}">
+				<include name="*.jar"/>
+				</fileset>
+			</path>
+			<javac destdir="${dir.build}">
+				<src path="${dir.src}" />
+				<classpath refid="master-classpath"/>
+			</javac>
+		</target>
+	
+	<target name="build" depends="compile">
+		<delete file="${dir.dist}/jdns.jar" failonerror="false" verbose="true" />
+		<delete file="${dir.dist}/jdns.war" failonerror="false" verbose="true" />
+		<jar destfile="${dir.dist}/jdns.jar">
+			<manifest>
+				<attribute name="Class-Path" value="."/>
+			    <attribute name="Main-Class" value="me.jaks.jdns.server.DNServer"/>
+			 </manifest>
+			<fileset dir="${dir.build}">
+				<include name="me/jaks/jdns/server/*.class" />
+				<include name="me/jaks/jdns/records/*.class" />
+			</fileset>
+				<zipgroupfileset dir="${dir.lib}" includes="*.jar" />
+				
+		</jar>
+	
+	<!-- create WAR archive file -->
+				<echo message="Creating jdns.war..." />
+				
+				<delete dir="${dir.build.tmp}" />
+				<mkdir dir="${dir.build.tmp}" />
+				<mkdir dir="${dir.build.tmp}/WEB-INF" />
+				<mkdir dir="${dir.build.tmp}/WEB-INF/classes" />
+				<mkdir dir="${dir.build.tmp}/WEB-INF/classes/META-INF" />
+				<mkdir dir="${dir.build.tmp}/WEB-INF/lib" />
+				<mkdir dir="${dir.build.tmp}/WEB-INF/jsp" />
+				<mkdir dir="${dir.build.tmp}/css" />
+		
+		<copy todir="${dir.build.tmp}/WEB-INF/classes">
+			<fileset dir="${dir.build}">
+			<include name="me/jaks/jdns/webapp/*.class" />
+			<include name="me/jaks/jdns/webapp/rest/*.class" />
+			</fileset>
+		</copy>
+		
+		<copy file="log4j.xml" todir="${dir.build.tmp}/WEB-INF/classes"/>
+		
+		<copy todir="${dir.build.tmp}/WEB-INF/jsp">
+			<fileset dir="WebContent/WEB-INF/jsp">
+			<include name="*.jsp"/>
+			</fileset>
+		</copy>
+		
+		<copy todir="${dir.build.tmp}/WEB-INF/">
+			<fileset dir="WebContent/WEB-INF/">
+			<include name="*.html"/>
+			</fileset>
+		</copy>
+		
+		<copy todir="${dir.build.tmp}/WEB-INF/">
+			<fileset dir="${dir.dat}">
+			<include name="jetty-env.xml"/>
+			<include name="web.xml"/>
+			</fileset>
+		</copy>
+		
+		<copy todir="${dir.build.tmp}/WEB-INF/lib">
+			<fileset dir="${dir.lib}">
+			<include name="*.jar"/>
+			</fileset>
+		</copy>
+		
+		<copy todir="${dir.build.tmp}/css">
+			<fileset dir="WebContent/css">
+			<include name="*.css"/>
+			</fileset>
+		</copy>
+		
+		<jar destfile="${dir.dist}/jdns.war" basedir="${dir.build.tmp}" includes="**">
+		</jar>
+		<delete includeemptydirs="true">
+		    <fileset dir="${dir.build}" includes="**/*"/>
+		  </delete>
+	</target>
+
+		
+	
+		
+		<!-- Initialize -->
+			
+		<target name="init">
+			<property name="dir.src" value="src/main" />
+			<property name="dir.build" value="build" />
+			<property name="dir.build.classes" value="${dir.build}/classes" />
+			<property name="dir.build.tmp" value="${dir.build}/tmp" />
+			<property name="dir.dist" value="dist" />
+			<property name="dir.dat" value="dat" />
+			<property name="dir.lib" value="lib" />
+		</target>	
+		
+		<target name="all" depends="build">
+		</target>
+</project>

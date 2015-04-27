@@ -34,7 +34,7 @@ public class ZoneDetailAction extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String zone = request.getParameter("zone");
 		
-		Record[] records = recordDao.getRecords(zone);
+		Record[] records = recordDao.getRecord(zone);
 		request.setAttribute("records", records);
 		request.getRequestDispatcher("/WEB-INF/jsp/zone.jsp").forward(request, response);
 		
