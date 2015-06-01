@@ -29,7 +29,7 @@
 				<include name="me/jaks/jdns/server/*.class" />
 				<include name="me/jaks/jdns/records/*.class" />
 			</fileset>
-				<zipgroupfileset dir="${dir.lib}" includes="*.jar" />
+				<zipgroupfileset dir="${dir.lib}" includes="c3p0*.jar,mchange-commons*.jar,mysql*.jar,log4j*.jar" />
 				
 		</jar>
 	
